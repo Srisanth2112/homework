@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Online Homework Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    
+    :root {
+      --primary: #2c3e50;
+      --secondary: #3498db;
+      --accent: #e74c3c;
+      --light: #f8f9fa;
+      --dark: #343a40;
+      --success: #2ecc71;
+      --text: #333;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0; 
+      padding: 0;
+      background: #f5f7fa;
+      min-height: 100vh;
+      color: var(--text);
+    }
+    
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    
+    #mainTitle {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+    
+    .presented-by {
+      font-size: 0.9rem;
+      margin-top: 8px;
+      display: block;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 5px 0;
+    }
+    
+    .presented-by:hover {
+      color: var(--secondary);
+    }
+    
+    .container {
+      padding: 15px;
+      animation: fadeIn 1s ease-in-out;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .admin-login {
+      max-width: 400px;
+      margin: 20px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: none;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    
+    .editor-form {
+      max-width: 700px;
+      margin: 20px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: none;
+      animation: fadeInUp 0.5s ease-out;
+    }
+    
+    .admin-login h2, .editor-form h2 {
+      color: var(--primary);
+      margin-top: 0;
+      position: relative;
+      padding-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    
+    .admin-login h2::after, .editor-form h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+    
+    input[type="password"], textarea {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 15px 0 20px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    
+    input[type="password"]:focus, textarea:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      outline: none;
+    }
+    
+    button {
+      background: var(--secondary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    
+    button:hover {
+      background: #2980b9;
+    }
+    
+    #contentDisplay {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      animation: fadeInUp 0.8s ease-out;
+    }
+    
+    .homework-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 1rem;
+    }
+    
+    .subject-icon {
+      color: var(--secondary);
+      font-size: 1.2rem;
+      width: 25px;
+      text-align: center;
+    }
+    
+    .last-updated {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 20px;
+      text-align: right;
+      font-style: italic;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* Success message */
+    .success-message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(150%);
+      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .success-message.show {
+      transform: translateX(0);
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      margin: 10px auto;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--secondary);
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px;
+      }
+      
+      #mainTitle {
+        font-size: 1.5rem;
+      }
+      
+      .presented-by {
+        font-size: 0.8rem;
+      }
+      
+      .container {
+        padding: 10px;
+      }
+      
+      .admin-login, .editor-form {
+        padding: 20px;
+        margin: 15px auto;
+      }
+      
+      input[type="password"], textarea {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+      
+      button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      
+      #contentDisplay {
+        padding: 15px;
+      }
+      
+      .homework-item {
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #mainTitle {
+        font-size: 1.3rem;
+      }
+      
+      .admin-login h2, .editor-form h2 {
+        font-size: 1.3rem;
+      }
+      
+      .homework-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1 id="mainTitle">Online Homework Portal
+      <span class="presented-by" ondblclick="showAdminLogin()">Presented by: K.G.Srisanth</span>
+    </h1>
+  </header>
+
+  <div class="container">
+    <div id="adminLogin" class="admin-login">
+      <h2>Admin Authentication</h2>
+      <input type="password" id="adminPass" placeholder="Enter Admin Password"/>
+      <button onclick="verifyAdmin()">
+        <i class="fas fa-unlock-alt"></i> Verify
+      </button>
+      <div id="loginSpinner" class="spinner"></div>
+    </div>
+
+    <div id="editorSection" class="editor-form">
+      <h2>Edit Homework Content</h2>
+      <textarea id="siteContent" rows="10" placeholder="Enter homework content in simple text format (one subject per line)"></textarea>
+      <button onclick="updateContent()">
+        <i class="fas fa-save"></i> Update Homework
+      </button>
+      <div id="saveSpinner" class="spinner"></div>
+    </div>
+
+    <div id="contentDisplay">
+      <!-- Default content loaded from localStorage if available -->
+    </div>
+  </div>
+  
+  <div id="successMessage" class="success-message">
+    <i class="fas fa-check-circle"></i> Homework updated successfully!
+  </div>
+
+  <script>
+    // Admin credentials
+    const ADMIN_PASSWORD = "saisri21";
+    
+    // Subject icons mapping
+    const SUBJECT_ICONS = {
+      "math": "fa-square-root-alt",
+      "science": "fa-flask",
+      "english": "fa-book",
+      "history": "fa-landmark",
+      "geography": "fa-globe-asia",
+      "computer": "fa-laptop-code",
+      "physics": "fa-atom",
+      "chemistry": "fa-vial",
+      "biology": "fa-dna"
+    };
+    
+    // Load saved content from localStorage when page loads
+    window.onload = function() {
+      const savedContent = localStorage.getItem("homeworkContent");
+      if (savedContent) {
+        document.getElementById("contentDisplay").innerHTML = savedContent;
+      } else {
+        // Default content if none saved yet
+        updateDefaultContent();
+      }
+    };
+    
+    function updateDefaultContent() {
+      const defaultContent = `
+        <h2><i class="fas fa-tasks"></i> Today's Homework</h2>
+        <div class="homework-item">
+          <span class="subject-icon"><i class="fas ${SUBJECT_ICONS.math}"></i></span>
+          <span>Math: Complete chapter 5 exercises</span>
+        </div>
+        <div class="homework-item">
+          <span class="subject-icon"><i class="fas ${SUBJECT_ICONS.science}"></i></span>
+          <span>Science: Prepare for lab experiment</span>
+        </div>
+        <div class="homework-item">
+          <span class="subject-icon"><i class="fas ${SUBJECT_ICONS.english}"></i></span>
+          <span>English: Write essay on favorite book</span>
+        </div>
+        <div class="last-updated">
+          <i class="fas fa-clock"></i> Last updated: ${new Date().toLocaleString()}
+        </div>`;
+      
+      document.getElementById("contentDisplay").innerHTML = defaultContent;
+      document.getElementById("siteContent").value = `Math: Complete chapter 5 exercises\nScience: Prepare for lab experiment\nEnglish: Write essay on favorite book`;
+    }
+    
+    function showAdminLogin() {
+      document.getElementById("adminLogin").style.display = "block";
+      document.getElementById("adminPass").focus();
+    }
+    
+    function verifyAdmin() {
+      const pass = document.getElementById("adminPass").value;
+      const spinner = document.getElementById("loginSpinner");
+      const verifyBtn = document.querySelector("#adminLogin button");
+      
+      // Show loading spinner
+      verifyBtn.style.display = "none";
+      spinner.style.display = "block";
+      
+      // Simulate verification delay
+      setTimeout(() => {
+        if (pass === ADMIN_PASSWORD) {
+          document.getElementById("adminLogin").style.display = "none";
+          document.getElementById("editorSection").style.display = "block";
+          
+          // Load current content into editor in simple text format
+          const contentDiv = document.getElementById("contentDisplay");
+          const homeworkItems = contentDiv.querySelectorAll(".homework-item span:not(.subject-icon)");
+          let plainTextContent = "";
+          
+          homeworkItems.forEach(item => {
+            if (item.textContent.trim() && !item.querySelector("i")) {
+              plainTextContent += item.textContent.trim() + "\n";
+            }
+          });
+          
+          document.getElementById("siteContent").value = plainTextContent.trim();
+        } else {
+          // Shake animation for wrong password
+          document.getElementById("adminLogin").style.animation = "shake 0.5s";
+          setTimeout(() => {
+            document.getElementById("adminLogin").style.animation = "";
+          }, 500);
+          alert("Incorrect admin password.");
+        }
+        
+        // Hide spinner and show button again
+        spinner.style.display = "none";
+        verifyBtn.style.display = "inline-flex";
+      }, 800);
+    }
+    
+    function updateContent() {
+      const plainTextContent = document.getElementById("siteContent").value;
+      const spinner = document.getElementById("saveSpinner");
+      const saveBtn = document.querySelector("#editorSection button");
+      
+      // Show loading spinner
+      saveBtn.style.display = "none";
+      spinner.style.display = "block";
+      
+      // Simulate saving delay
+      setTimeout(() => {
+        // Convert plain text to HTML format
+        let htmlContent = `<h2><i class="fas fa-tasks"></i> Today's Homework</h2>`;
+        const lines = plainTextContent.split('\n');
+        
+        lines.forEach(line => {
+          if (line.trim()) {
+            // Extract subject (text before colon)
+            const subjectMatch = line.match(/^([^:]+):/);
+            let subject = subjectMatch ? subjectMatch[1].toLowerCase().trim() : 'default';
+            let icon = SUBJECT_ICONS[subject] || SUBJECT_ICONS['default'] || 'fa-book-open';
+            
+            htmlContent += `
+              <div class="homework-item">
+                <span class="subject-icon"><i class="fas ${icon}"></i></span>
+                <span>${line.trim()}</span>
+              </div>`;
+          }
+        });
+        
+        // Add timestamp
+        htmlContent += `
+          <div class="last-updated">
+            <i class="fas fa-clock"></i> Last updated: ${new Date().toLocaleString()}
+          </div>`;
+        
+        document.getElementById("contentDisplay").innerHTML = htmlContent;
+        localStorage.setItem("homeworkContent", htmlContent);
+        
+        // Show success message
+        const successMsg = document.getElementById("successMessage");
+        successMsg.classList.add("show");
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          successMsg.classList.remove("show");
+        }, 3000);
+        
+        // Hide editor after successful update
+        setTimeout(() => {
+          document.getElementById("editorSection").style.display = "none";
+        }, 1000);
+        
+        // Hide spinner and show button
+        spinner.style.display = "none";
+        saveBtn.style.display = "inline-flex";
+      }, 1000);
+    }
+    
+    // Add shake animation for wrong password
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-8px); }
+        40%, 80% { transform: translateX(8px); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+</html>
