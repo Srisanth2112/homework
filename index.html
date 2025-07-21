@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Online Homework Portal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -18,6 +18,10 @@
       --text: #333;
     }
     
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Poppins', sans-serif;
       margin: 0; 
@@ -25,12 +29,13 @@
       background: #f5f7fa;
       min-height: 100vh;
       color: var(--text);
+      line-height: 1.6;
     }
     
     header {
       background: var(--primary);
       color: white;
-      padding: 20px;
+      padding: 15px 10px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       position: relative;
@@ -39,21 +44,22 @@
     #mainTitle {
       margin: 0;
       font-weight: 600;
-      font-size: 1.8rem;
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
       animation: fadeInDown 0.8s ease-out;
     }
     
     .presented-by {
-      font-size: 0.9rem;
+      font-size: clamp(0.8rem, 3vw, 0.9rem);
       margin-top: 8px;
       display: block;
       cursor: pointer;
       transition: all 0.3s ease;
       position: relative;
       padding: 5px 0;
+      user-select: none;
     }
     
-    .presented-by:hover {
+    .presented-by:active {
       color: var(--secondary);
     }
     
@@ -62,28 +68,31 @@
       animation: fadeIn 1s ease-in-out;
       max-width: 800px;
       margin: 0 auto;
+      width: 100%;
     }
     
     .admin-login {
       max-width: 400px;
       margin: 20px auto;
       background: white;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       display: none;
       animation: fadeInUp 0.5s ease-out;
+      width: 90%;
     }
     
     .editor-form {
       max-width: 700px;
       margin: 20px auto;
       background: white;
-      padding: 25px;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.05);
       display: none;
       animation: fadeInUp 0.5s ease-out;
+      width: 90%;
     }
     
     .admin-login h2, .editor-form h2 {
@@ -91,7 +100,7 @@
       margin-top: 0;
       position: relative;
       padding-bottom: 10px;
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
     }
     
     .admin-login h2::after, .editor-form h2::after {
@@ -113,8 +122,8 @@
       border-radius: 8px;
       font-family: 'Poppins', sans-serif;
       transition: all 0.3s ease;
-      font-size: 1rem;
-      box-sizing: border-box;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      resize: vertical;
     }
     
     input[type="password"]:focus, textarea:focus {
@@ -135,7 +144,9 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      width: 100%;
+      justify-content: center;
     }
     
     button:hover {
@@ -153,19 +164,20 @@
     
     .homework-item {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       margin-bottom: 10px;
       padding: 10px 0;
       border-bottom: 1px solid #eee;
-      font-size: 1rem;
+      font-size: clamp(0.9rem, 3vw, 1rem);
     }
     
     .subject-icon {
       color: var(--secondary);
       font-size: 1.2rem;
-      width: 25px;
+      min-width: 25px;
       text-align: center;
+      padding-top: 2px;
     }
     
     .last-updated {
@@ -220,6 +232,7 @@
       gap: 10px;
       transform: translateX(150%);
       transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      max-width: calc(100% - 40px);
     }
     
     .success-message.show {
@@ -243,60 +256,14 @@
     }
 
     /* Mobile responsiveness */
-    @media (max-width: 768px) {
-      header {
-        padding: 15px;
-      }
-      
-      #mainTitle {
-        font-size: 1.5rem;
-      }
-      
-      .presented-by {
-        font-size: 0.8rem;
-      }
-      
-      .container {
-        padding: 10px;
+    @media (min-width: 768px) {
+      button {
+        width: auto;
       }
       
       .admin-login, .editor-form {
-        padding: 20px;
-        margin: 15px auto;
-      }
-      
-      input[type="password"], textarea {
-        padding: 10px 12px;
-        font-size: 0.9rem;
-      }
-      
-      button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
-      }
-      
-      #contentDisplay {
-        padding: 15px;
-      }
-      
-      .homework-item {
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      #mainTitle {
-        font-size: 1.3rem;
-      }
-      
-      .admin-login h2, .editor-form h2 {
-        font-size: 1.3rem;
-      }
-      
-      .homework-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
+        width: 100%;
+        padding: 25px;
       }
     }
   </style>
@@ -312,7 +279,7 @@
   <div class="container">
     <div id="adminLogin" class="admin-login">
       <h2>Admin Authentication</h2>
-      <input type="password" id="adminPass" placeholder="Enter Admin Password"/>
+      <input type="password" id="adminPass" placeholder="Enter Admin Password">
       <button onclick="verifyAdmin()">
         <i class="fas fa-unlock-alt"></i> Verify
       </button>
@@ -321,7 +288,7 @@
 
     <div id="editorSection" class="editor-form">
       <h2>Edit Homework Content</h2>
-      <textarea id="siteContent" rows="10" placeholder="Enter homework content in simple text format (one subject per line)"></textarea>
+      <textarea id="siteContent" rows="10" placeholder="Enter homework items (one per line). Example:&#10;Math: Complete exercises on page 45&#10;Science: Read chapter 3&#10;English: Write a 300-word essay"></textarea>
       <button onclick="updateContent()">
         <i class="fas fa-save"></i> Update Homework
       </button>
@@ -329,7 +296,7 @@
     </div>
 
     <div id="contentDisplay">
-      <!-- Default content loaded from localStorage if available -->
+      <!-- Content loaded from localStorage -->
     </div>
   </div>
   
@@ -351,11 +318,12 @@
       "computer": "fa-laptop-code",
       "physics": "fa-atom",
       "chemistry": "fa-vial",
-      "biology": "fa-dna"
+      "biology": "fa-dna",
+      "default": "fa-book-open"
     };
     
     // Load saved content from localStorage when page loads
-    window.onload = function() {
+    document.addEventListener('DOMContentLoaded', function() {
       const savedContent = localStorage.getItem("homeworkContent");
       if (savedContent) {
         document.getElementById("contentDisplay").innerHTML = savedContent;
@@ -363,7 +331,7 @@
         // Default content if none saved yet
         updateDefaultContent();
       }
-    };
+    });
     
     function updateDefaultContent() {
       const defaultContent = `
@@ -386,6 +354,7 @@
       
       document.getElementById("contentDisplay").innerHTML = defaultContent;
       document.getElementById("siteContent").value = `Math: Complete chapter 5 exercises\nScience: Prepare for lab experiment\nEnglish: Write essay on favorite book`;
+      localStorage.setItem("homeworkContent", defaultContent);
     }
     
     function showAdminLogin() {
@@ -420,12 +389,13 @@
           });
           
           document.getElementById("siteContent").value = plainTextContent.trim();
+          document.getElementById("siteContent").focus();
         } else {
           // Shake animation for wrong password
-          document.getElementById("adminLogin").style.animation = "shake 0.5s";
-          setTimeout(() => {
-            document.getElementById("adminLogin").style.animation = "";
-          }, 500);
+          const adminLogin = document.getElementById("adminLogin");
+          adminLogin.style.animation = "none";
+          void adminLogin.offsetWidth; // Trigger reflow
+          adminLogin.style.animation = "shake 0.5s";
           alert("Incorrect admin password.");
         }
         
@@ -455,7 +425,7 @@
             // Extract subject (text before colon)
             const subjectMatch = line.match(/^([^:]+):/);
             let subject = subjectMatch ? subjectMatch[1].toLowerCase().trim() : 'default';
-            let icon = SUBJECT_ICONS[subject] || SUBJECT_ICONS['default'] || 'fa-book-open';
+            let icon = SUBJECT_ICONS[subject] || SUBJECT_ICONS['default'];
             
             htmlContent += `
               <div class="homework-item">
@@ -471,6 +441,7 @@
             <i class="fas fa-clock"></i> Last updated: ${new Date().toLocaleString()}
           </div>`;
         
+        // Update display and localStorage
         document.getElementById("contentDisplay").innerHTML = htmlContent;
         localStorage.setItem("homeworkContent", htmlContent);
         
